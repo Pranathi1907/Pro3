@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Savoria - Explore authentic world cuisines with interactive cooking guides, step-by-step timers, dynamic servings scaler, and voice assistant.">
+  <meta name="keywords" content="cooking, global cuisines, authentic recipes, cooking timers, italian cuisine, japanese ramen, mexican tacos, indian butter chicken, thai street food">
+  <meta name="author" content="Savoria Culinary Labs">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:title" content="Savoria — Master Authentic Global Cuisines">
+  <meta property="og:description" content="Discover authentic recipes from Italy, Japan, India, Mexico, Thailand, and beyond with interactive cooking timers and serving scalers.">
+  <meta property="og:type" content="website">
+
+  <title>Savoria — Master Authentic Global Cuisines | Interactive Recipes</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>">
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header" id="main-header">
+    <div class="container header-inner">
+      <a href="#" class="brand-logo" id="brand-logo-link" aria-label="Savoria Home">
+        <span class="brand-icon-flame">🍳</span>
+        <div>
+          <span>SAVORIA</span>
+          <span class="brand-tagline">Global Gastronomy</span>
+        </div>
+      </a>
+
+      <nav class="nav-actions" aria-label="Header Actions">
+        <!-- View Saved Recipes Button -->
+        <button class="action-btn" id="view-saved-btn" title="View Saved Recipes">
+          <span>❤️</span>
+          <span>Saved</span>
+          <span class="badge-count" id="favorites-badge-count">0</span>
+        </button>
+
+        <!-- Grocery Drawer Button -->
+        <button class="action-btn" id="open-shopping-list-btn" title="Open Grocery Shopping List">
+          <span>🛒</span>
+          <span>Pantry List</span>
+          <span class="badge-count" id="shopping-badge-count">0</span>
+        </button>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button class="action-btn icon-only" id="theme-toggle" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main id="main-content">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="hero-eyebrow">
+            <span>✨</span> Michelin-Grade Home Cooking
+          </div>
+          <h1 class="hero-title">
+            Master the World's Most <span class="gradient-text">Iconic Cuisines</span>
+          </h1>
+          <p class="hero-description">
+            Embark on a chef-crafted culinary journey across continents. Experience authentic recipes with dynamic serving scaling, built-in precision timers, and a voice-assisted cooking companion.
+          </p>
+
+          <div class="hero-stats-row">
+            <div class="hero-stat-item">
+              <h4>8+</h4>
+              <p>World Regions</p>
+            </div>
+            <div class="hero-stat-item">
+              <h4>100%</h4>
+              <p>Authentic Recipes</p>
+            </div>
+            <div class="hero-stat-item">
+              <h4>Hands-Free</h4>
+              <p>Voice Cook Assistant</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-showcase-card" id="hero-featured-card">
+            <img class="hero-showcase-img" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1000&q=80" alt="Artisanal Tokyo Shoyu Ramen">
+            <div class="hero-showcase-info">
+              <span class="hero-featured-tag">🔥 Featured Masterpiece</span>
+              <h3 class="hero-showcase-title">Artisanal Tokyo Shoyu Ramen</h3>
+              <div class="hero-showcase-meta">
+                <span>🇯🇵 Japan</span>
+                <span>★ 5.0 (512 reviews)</span>
+                <span>⏱️ 3h 35m</span>
+              </div>
+              <button class="btn btn-primary" onclick="openRecipeModal('tokyo-shoyu-ramen')">
+                Explore Tokyo Ramen Recipe →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTER SECTION (CUISINES & SEARCH) -->
+    <section class="filter-section" id="recipes-explorer">
+      <div class="container">
+
+        <!-- Cuisine Filter Bar (Horizontal scrollable chips) -->
+        <div class="cuisine-scroll-wrap" role="region" aria-label="Filter by Cuisine">
+          <div class="cuisine-chips-grid" id="cuisine-filter-bar">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Controls: Search, Dietary Filters, and Sorting -->
+        <div class="controls-bar">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="recipe-search-input" class="search-input" placeholder="Search by dish name, ingredient (e.g. garlic, chili, pasta)..." aria-label="Search recipes">
+          </div>
+
+          <div class="secondary-filters">
+            <div class="diet-pills-list" id="diet-filter-bar" role="group" aria-label="Dietary Filters">
+              <!-- Rendered by JS -->
+            </div>
+
+            <select id="recipe-sort-select" class="sort-select" aria-label="Sort recipes">
+              <option value="featured">✨ Featured</option>
+              <option value="rating">★ Highest Rated</option>
+              <option value="time">⏱️ Fastest Cook Time</option>
+              <option value="calories">🥗 Lowest Calories</option>
+              <option value="reviews">💬 Most Reviewed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pantry Matcher ("What's In Your Kitchen?") -->
+        <div class="pantry-matcher-card" id="pantry-matcher-card">
+          <div class="pantry-header">
+            <div class="pantry-title-wrap">
+              <span class="pantry-icon">🧺</span>
+              <h3 class="pantry-title">Pantry Matcher</h3>
+              <span class="pantry-selected-label" id="pantry-selected-count"></span>
+            </div>
+            <button class="clear-pantry-btn" id="clear-pantry-btn">Clear All</button>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Click ingredients you already have in your kitchen, and we'll surface dishes you can cook tonight!
+          </p>
+          <div class="pantry-pills-wrap" id="pantry-pills-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Recipe Grid Header -->
+        <div class="section-meta-row">
+          <h2 class="section-heading">Curated Global Dishes</h2>
+          <span class="results-badge" id="results-count-badge">Loading dishes...</span>
+        </div>
+
+        <!-- Recipe Cards Grid -->
+        <div class="recipes-grid" id="recipes-grid" role="region" aria-live="polite">
+          <!-- Rendered by JS -->
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= RECIPE DETAIL MODAL ================= -->
+  <div class="modal-overlay" id="recipe-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <!-- Media Header -->
+      <div class="modal-header-media">
+        <img id="modal-hero-img" class="modal-hero-img" src="" alt="Recipe Image">
+        <button class="modal-close-btn" onclick="closeRecipeModal()" aria-label="Close modal">✕</button>
+        <div class="modal-header-content">
+          <div class="modal-cuisine-breadcrumb">
+            <span id="modal-flag"></span>
+            <span id="modal-cuisine"></span> • <span id="modal-origin"></span>
+          </div>
+          <h2 class="modal-title" id="modal-title"></h2>
+        </div>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="modal-body-scroll">
+
+        <!-- Metrics Row -->
+        <div class="modal-metrics-bar">
+          <div class="metric-box">
+            <span class="metric-label">Prep Time</span>
+            <span class="metric-val" id="modal-prep-time"></span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Cook Time</span>
+            <span class="metric-val" id="modal-cook-time"></span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Difficulty</span>
+            <span class="metric-val" id="modal-difficulty"></span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Calories</span>
+            <span class="metric-val" id="modal-calories"></span>
+          </div>
+        </div>
+
+        <!-- Story Summary -->
+        <p class="modal-summary-text" id="modal-summary"></p>
+
+        <!-- Chef's Technique Tip & Wine Pairing -->
+        <div class="chef-tip-banner">
+          <div class="chef-tip-heading">
+            <span>👨‍🍳</span> Chef's Secret Technique
+          </div>
+          <p class="chef-tip-text" id="modal-chef-tip"></p>
+          <div class="wine-pairing-row">
+            🍷 <strong>Sommelier Pairing:</strong> <span id="modal-wine-pairing"></span>
+          </div>
+        </div>
+
+        <!-- Nutrition Grid -->
+        <div>
+          <h4 class="section-subheading" style="font-size: 1.15rem; margin-bottom: 0.75rem;">Nutritional Profile (per serving)</h4>
+          <div class="nutrition-grid" id="modal-nutrition-grid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Ingredients Section with Serving Scaler -->
+        <div class="ingredients-section">
+          <div class="ingredients-header">
+            <h3 class="section-subheading">Ingredients</h3>
+
+            <div class="servings-controls-wrap">
+              <!-- Stepper -->
+              <div class="servings-stepper">
+                <button class="stepper-btn" onclick="changeServings(-1)" aria-label="Decrease Servings">−</button>
+                <span class="servings-count" id="servings-count">4 servings</span>
+                <button class="stepper-btn" onclick="changeServings(1)" aria-label="Increase Servings">+</button>
+              </div>
+
+              <!-- Metric / Imperial Toggle -->
+              <div class="unit-toggle-group">
+                <button class="unit-toggle-btn active" data-unit="metric" onclick="toggleUnitSystem('metric')">Metric (g/ml)</button>
+                <button class="unit-toggle-btn" data-unit="imperial" onclick="toggleUnitSystem('imperial')">Imperial (oz/cups)</button>
+              </div>
+            </div>
+          </div>
+
+          <ul class="ingredients-list" id="modal-ingredients-list">
+            <!-- Rendered by JS -->
+          </ul>
+        </div>
+
+        <!-- Step-by-Step Instructions -->
+        <div class="steps-section">
+          <h3 class="section-subheading" style="margin-bottom: 1.25rem;">Step-by-Step Preparation</h3>
+          <div class="steps-container" id="modal-steps-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Fixed Footer Actions -->
+      <div class="modal-footer-sticky">
+        <button class="btn btn-secondary" id="modal-fav-btn" onclick="toggleFavorite(AppState.activeRecipe.id)">
+          🤍 Save to Favorites
+        </button>
+
+        <div class="modal-footer-actions">
+          <button class="btn btn-secondary" onclick="addAllIngredientsToShoppingList()">
+            🛒 Add to Grocery List
+          </button>
+          <button class="btn btn-primary" onclick="startCookingMode()">
+            🚀 Start Cooking Mode
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= INTERACTIVE COOKING MODE OVERLAY ================= -->
+  <div class="cooking-overlay" id="cooking-mode-overlay" role="dialog" aria-modal="true" aria-label="Interactive Cooking Mode">
+    <!-- Top Bar -->
+    <div class="cooking-top-bar">
+      <div class="cooking-header-info">
+        <span class="cooking-step-badge" id="cooking-step-badge">Step 1 of 4</span>
+        <h3 class="cooking-recipe-title" id="cooking-recipe-title">Recipe Title</h3>
+      </div>
+      <button class="action-btn" onclick="closeCookingMode()" aria-label="Exit Cooking Mode">
+        <span>✕</span> Exit Cooking Mode
+      </button>
+    </div>
+
+    <!-- Progress Track -->
+    <div class="cooking-progress-track">
+      <div class="cooking-progress-fill" id="cooking-progress-bar"></div>
+    </div>
+
+    <!-- Focus Stage -->
+    <div class="cooking-stage">
+      <div class="cooking-card-focus">
+        <h2 class="cooking-step-title" id="cooking-step-title">Step Title</h2>
+        <p class="cooking-step-text" id="cooking-step-text">Instruction content goes here...</p>
+
+        <div class="cooking-technique-box" id="cooking-step-technique"></div>
+
+        <div id="cooking-step-timer-wrapper" class="hidden"></div>
+
+        <div class="cooking-controls-row">
+          <!-- Voice Synthesis Assistant -->
+          <button class="cooking-speech-btn" id="cooking-speech-btn" onclick="toggleReadAloud()">
+            🎙️ Read Step Aloud
+          </button>
+
+          <!-- Navigation Prev / Next -->
+          <div class="cooking-nav-buttons">
+            <button class="btn btn-secondary" id="cooking-prev-btn" onclick="prevCookingStep()">
+              ← Previous Step
+            </button>
+            <button class="btn btn-primary" id="cooking-next-btn" onclick="nextCookingStep()">
+              Next Step →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FLOATING KITCHEN TIMER WIDGET ================= -->
+  <div class="floating-timer-widget hidden" id="floating-timer-widget">
+    <div>
+      <div class="timer-widget-label">Cooking Timer</div>
+      <div class="timer-widget-time">00:00</div>
+      <div class="timer-widget-progress">
+        <div class="timer-progress-fill"></div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.4rem;">
+      <button class="timer-btn-icon" onclick="TimerManager.addTime(60)" title="Add 1 Minute">+1m</button>
+      <button class="timer-btn-icon" onclick="TimerManager.dismiss()" title="Dismiss Timer">✕</button>
+    </div>
+  </div>
+
+  <!-- ================= GROCERY SHOPPING LIST DRAWER ================= -->
+  <div class="shopping-drawer-backdrop" id="shopping-drawer-backdrop"></div>
+  <aside class="shopping-drawer" id="shopping-drawer" aria-label="Grocery Shopping List">
+    <div class="drawer-header">
+      <h3 class="drawer-title">🛒 Pantry & Grocery List</h3>
+      <button class="modal-close-btn" id="close-shopping-drawer-btn" style="position: static; width: 34px; height: 34px;" aria-label="Close Shopping Drawer">✕</button>
+    </div>
+
+    <div class="drawer-body" id="shopping-list-items">
+      <!-- Rendered by JS -->
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn btn-secondary" style="flex: 1;" onclick="clearShoppingList()">Clear All</button>
+      <button class="btn btn-primary" style="flex: 1.5;" onclick="copyShoppingList()">📋 Copy List</button>
+    </div>
+  </aside>
+
+  <!-- ================= TOAST CONTAINER ================= -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 0.5rem;">
+            <span class="brand-icon-flame" style="width: 32px; height: 32px; font-size: 1.1rem;">🍳</span>
+            <span>SAVORIA</span>
+          </div>
+          <p>
+            Celebrating the rich culinary traditions of humanity. From Roman ragùs to Tokyo broth-crafting, master world flavors with confidence and joy.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Cuisines</h4>
+          <ul class="footer-links">
+            <li><a href="#recipes-explorer" onclick="AppState.currentCuisine='italian'; initCuisineFilters(); renderRecipes();">Italian Gastronomy</a></li>
+            <li><a href="#recipes-explorer" onclick="AppState.currentCuisine='japanese'; initCuisineFilters(); renderRecipes();">Japanese Broths & Donburi</a></li>
+            <li><a href="#recipes-explorer" onclick="AppState.currentCuisine='indian'; initCuisineFilters(); renderRecipes();">Indian Curries & Tandoor</a></li>
+            <li><a href="#recipes-explorer" onclick="AppState.currentCuisine='mexican'; initCuisineFilters(); renderRecipes();">Mexican Chiles & Tacos</a></li>
+            <li><a href="#recipes-explorer" onclick="AppState.currentCuisine='thai'; initCuisineFilters(); renderRecipes();">Thai Wok & Soups</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Kitchen Tools</h4>
+          <ul class="footer-links">
+            <li><a href="#pantry-matcher-card">Pantry Ingredient Matcher</a></li>
+            <li><a href="#" onclick="openShoppingDrawer(); return false;">Grocery Checklist Drawer</a></li>
+            <li><a href="#recipes-explorer" onclick="AppState.currentDiet='quick'; initDietaryFilters(); renderRecipes();">Quick Meals (&lt;35 mins)</a></li>
+            <li><a href="#recipes-explorer" onclick="AppState.currentDiet='vegetarian'; initDietaryFilters(); renderRecipes();">Vegetarian Specialties</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Kitchen Units Guide</h4>
+          <p style="font-size: 0.82rem; line-height: 1.6;">
+            1 tbsp = 15 ml<br>
+            1 cup = 240 ml / 8 fl oz<br>
+            1 lb = 454 g<br>
+            1 oz = 28.3 g
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Savoria Gastronomy. Crafted with pure HTML, CSS & JavaScript.</span>
+        <span>Made for food lovers worldwide 🌍❤️</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/recipes-data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
